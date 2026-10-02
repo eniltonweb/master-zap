@@ -4,6 +4,7 @@ import { Network } from "vis-network";
 import { DataSet } from "vis-data";
 import { useContacts } from "@/hooks/use-contacts";
 import { Loader2 } from "lucide-react";
+import { Contact } from "@shared/schema";
 
 interface GraphModalProps {
   open: boolean;
@@ -21,7 +22,7 @@ export function GraphModal({ open, onOpenChange }: GraphModalProps) {
     // Build Graph Data
     const nodes = new DataSet([
       { id: 0, label: "Daniel Vorcaro", shape: "circularImage", image: "https://api.dicebear.com/7.x/bottts/svg?seed=vorcaro", size: 40, font: { bold: true } },
-      ...contacts.map((c: any) => ({
+      ...contacts.map((c: Contact) => ({
         id: c.id,
         label: c.name,
         shape: "circularImage",
@@ -37,7 +38,7 @@ export function GraphModal({ open, onOpenChange }: GraphModalProps) {
       { from: 0, to: 9, label: "Aeroporto/Jantar", font: { size: 10 }, color: "#075E54" },
       { from: 0, to: 11, label: "Grande Amigo/Emenda", font: { size: 10 }, color: "#075E54" },
       { from: 0, to: 8, label: "Reunião Casa Oficial", font: { size: 10 }, color: "#075E54" },
-      ...contacts.filter(c => ![1, 2, 22, 9, 11, 8].includes(c.id)).map((c: any) => ({
+      ...contacts.filter((c: Contact) => ![1, 2, 22, 9, 11, 8].includes(c.id)).map((c: Contact) => ({
         from: 0,
         to: c.id,
         label: "Citado/Agenda",
@@ -60,7 +61,7 @@ export function GraphModal({ open, onOpenChange }: GraphModalProps) {
       },
       edges: {
         width: 1.5,
-        smooth: { type: "continuous" }
+        smooth: { enabled: true, type: "continuous", roundness: 0.5 }
       },
       physics: {
         barnesHut: { gravitationalConstant: -4000, springLength: 150, springConstant: 0.04 },
